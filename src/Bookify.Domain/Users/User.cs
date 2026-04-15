@@ -10,7 +10,7 @@ namespace Bookify.Domain.Users
             FirstName = firstName;
             LastName = lastName;
             Email = email;
-
+        }
 
         public FirstName FirstName { get; private set; }
         public LastName LastName { get; private set; }

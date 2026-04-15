@@ -49,7 +49,7 @@ namespace Bookify.Domain.Bookings
         {
             if (Status != BookingStatus.Reserved)
             {
-                return Result.Failure();
+                return Result.Failure(BookingErrors.NotReserved);
             }
             Status = BookingStatus.Confirmed;
             ConfirmedOnUtc = utcNow;
@@ -61,7 +61,7 @@ namespace Bookify.Domain.Bookings
         {
             if (Status != BookingStatus.Reserved)
             {
-                return Result.Failure();
+                return Result.Failure(BookingErrors.NotReserved);
             }
             Status = BookingStatus.Rejected;
             RejectedOnUtc = utcNow;
@@ -73,7 +73,7 @@ namespace Bookify.Domain.Bookings
         {
             if (Status != BookingStatus.Reserved)
             {
-                return Result.Failure();
+                return Result.Failure(BookingErrors.NotReserved);
             }
             Status = BookingStatus.Completed;
             CompletedOnUtc = utcNow;
@@ -85,12 +85,12 @@ namespace Bookify.Domain.Bookings
         {
             if (Status != BookingStatus.Confirmed)
             {
-                return Result.Failure();
+                return Result.Failure(BookingErrors.NotConfirmed);
             }
             var currentDate = DateOnly.FromDateTime(utcNow);
             if (currentDate > Duration.Start)
             {
-                return Result.Failure();
+                return Result.Failure(BookingErrors.Overlap);
             }
             Status = BookingStatus.Cancelled;
             CancelledOnUtc = utcNow;
