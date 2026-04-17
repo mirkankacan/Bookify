@@ -1,7 +1,12 @@
 <Solution>
   <Folder Name="/src/">
+    <Project Path="src/Bookify.Api/Bookify.Api.csproj" Id="890ea874-a95c-4c22-85b3-f790092b7882" />
     <Project Path="src/Bookify.Application/Bookify.Application.csproj" Id="c3b28d0d-82f0-4e0d-93e7-4b9d3a47d027" />
     <Project Path="src/Bookify.Domain/Bookify.Domain.csproj" />
+    <Project Path="src/Bookify.Infrastructure/Bookify.Infrastructure.csproj" Id="5ae0a06d-c083-44b9-8876-c6b4c098f39f" />
   </Folder>
   <Folder Name="/test/" />
+  <Project Path="docker-compose.dcproj">
+    <Build />
+  </Project>
 </Solution>

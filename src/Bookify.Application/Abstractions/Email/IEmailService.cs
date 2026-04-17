@@ -2,6 +2,6 @@
 {
     public interface IEmailService
     {
-        Task SendEmailAsync(Domain.Users.Email recipient, string subject, string body, string? from = null, string? cc = null, string? bcc = null);
+        Task SendEmailAsync(Domain.Users.Email recipient, string subject, string body, CancellationToken cancellationToken = default);
     }
 }
