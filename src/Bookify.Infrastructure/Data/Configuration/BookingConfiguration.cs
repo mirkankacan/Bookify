@@ -22,7 +22,7 @@ namespace Bookify.Infrastructure.Data.Configuration
                 priceBuilder.Property(money => money.Currency)
                 .HasConversion(currency => currency.Code, code => Currency.FromCode(code));
             });
-            builder.OwnsOne(x => x.AmentitiesUpCharge, priceBuilder =>
+            builder.OwnsOne(x => x.AmenitiesUpCharge, priceBuilder =>
             {
                 priceBuilder.Property(money => money.Currency)
                 .HasConversion(currency => currency.Code, code => Currency.FromCode(code));

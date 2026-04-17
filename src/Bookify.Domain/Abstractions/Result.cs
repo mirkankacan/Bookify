@@ -15,11 +15,11 @@ namespace Bookify.Domain.Abstractions
                 throw new InvalidOperationException("Cannot create a failed result without an error");
             }
             IsSuccess = isSuccess;
-            ErrorMessage = error;
+            Error = error;
         }
 
         public bool IsSuccess { get; private set; }
-        public Error ErrorMessage { get; private set; }
+        public Error Error { get; private set; }
         public bool IsFailure => !IsSuccess;
 
         public static Result Success() => new(true, Error.None);

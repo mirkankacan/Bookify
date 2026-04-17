@@ -1,5 +1,4 @@
-﻿using Bookify.Application.Abstractions.Clock;
-using Bookify.Application.Exceptions;
+﻿using Bookify.Application.Exceptions;
 using Bookify.Domain.Abstractions;
 using Bookify.Domain.Apartments;
 using Bookify.Domain.Bookings;
@@ -10,19 +9,22 @@ using Newtonsoft.Json;
 
 namespace Bookify.Infrastructure.Data
 {
-    public sealed class ApplicationDbContext(IPublisher publisher) : DbContext, IUnitOfWork
+    public sealed class ApplicationDbContext : DbContext, IUnitOfWork
     {
         private static readonly JsonSerializerSettings JsonSerializerSettings = new()
         {
             TypeNameHandling = TypeNameHandling.All
         };
 
+        private readonly IPublisher _publisher;
+
         public DbSet<Booking> Bookings { get; set; } = null!;
         public DbSet<User> Users { get; set; } = null!;
         public DbSet<Apartment> Apartments { get; set; } = null!;
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IDateTimeProvider dateTimeProvider) : base(options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IPublisher publisher) : base(options)
         {
+            _publisher = publisher;
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -44,7 +46,7 @@ namespace Bookify.Infrastructure.Data
                 }).ToList();
             foreach (var domainEntity in domainEntities)
             {
-                await publisher.Publish(domainEntity, cancellationToken);
+                await _publisher.Publish(domainEntity, cancellationToken);
             }
         }
 

@@ -54,7 +54,7 @@ WHERE NOT EXISTS
             {
                 request.StartDate,
                 request.EndDate,
-                ActiveBookingStatuses = new[] { BookingStatus.Confirmed }
+                ActiveBookingStatuses = ActiveBookingStatuses.Cast<int>().ToArray()
             },
             splitOn: "Country");
 
