@@ -1,4 +1,6 @@
+using Bookify.Application.Users.RegisterUser;
 using Carter;
+using MediatR;
 
 namespace Bookify.Api.Endpoints.Users
 {
@@ -9,7 +11,11 @@ namespace Bookify.Api.Endpoints.Users
             var group = app.MapGroup("api/users")
               .WithTags("Users");
 
-            // User use case'leri eklenince buraya gelecek
+            group.MapPost("/register", async (RegisterUserCommand command, ISender sender, CancellationToken cancellationToken) =>
+            {
+                var result = await sender.Send(command, cancellationToken);
+                return result.IsSuccess ? Results.Ok(result.Value) : Results.BadRequest(result.Error);
+            }).AllowAnonymous();
         }
     }
 }

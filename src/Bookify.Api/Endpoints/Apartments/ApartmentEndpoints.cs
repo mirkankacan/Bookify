@@ -9,7 +9,7 @@ namespace Bookify.Api.Endpoints.Apartments
         public void AddRoutes(IEndpointRouteBuilder app)
         {
             var group = app.MapGroup("api/apartments")
-              .WithTags("Apartments");
+              .WithTags("Apartments").RequireAuthorization();
 
             group.MapGet("/", async (DateOnly startDate, DateOnly endDate, ISender sender, CancellationToken cancellationToken) =>
             {
