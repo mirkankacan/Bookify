@@ -1,6 +1,6 @@
 ﻿using Bookify.Domain.Users;
 
-namespace Bookify.Application.Authentication
+namespace Bookify.Application.Abstractions.Authentication
 {
     public interface IAuthenticationService
     {
