@@ -7,12 +7,14 @@ using Bookify.Domain.Apartments;
 using Bookify.Domain.Bookings;
 using Bookify.Domain.Users;
 using Bookify.Infrastructure.Authentication;
+using Bookify.Infrastructure.Authorization;
 using Bookify.Infrastructure.Clock;
 using Bookify.Infrastructure.Data;
 using Bookify.Infrastructure.Email;
 using Bookify.Infrastructure.Repositories;
 using Dapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,6 +31,7 @@ namespace Bookify.Infrastructure
             AddPersistence(services, configuration);
             AddOptions(services);
             AddAuthentication(services);
+            AddAuthorization(services);
             return services;
         }
 
@@ -65,6 +68,8 @@ namespace Bookify.Infrastructure
 
         private static void AddAuthentication(IServiceCollection services)
         {
+            services.AddHttpContextAccessor();
+
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
             services.ConfigureOptions<JwtBearerOptionsSetup>();
 
@@ -80,6 +85,15 @@ namespace Bookify.Infrastructure
                 var keycloakOptions = serviceProvider.GetRequiredService<KeycloakOptions>();
                 httpClient.BaseAddress = new Uri(keycloakOptions.TokenUrl);
             });
+        }
+
+        private static void AddAuthorization(IServiceCollection services)
+        {
+            services.AddScoped<AuthorizationService>();
+            services.AddScoped<Microsoft.AspNetCore.Authentication.IClaimsTransformation, CustomClaimTransformation>();
+            services.AddAuthorization();
+            services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
+            services.AddTransient<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
         }
     }
 }

@@ -21,8 +21,6 @@ builder.Services.AddApplication()
 builder.Services.AddTransient<GlobalExceptionMiddleware>();
 builder.Services.AddTransient<RequestContextLoggingMiddleware>();
 
-builder.Services.AddAuthentication();
-builder.Services.AddAuthorization();
 builder.Services.AddCarter();
 
 var app = builder.Build();
